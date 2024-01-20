@@ -7,32 +7,49 @@ export const ContactForm = ({
   setPhone,
   email,
   setEmail,
-  handleSubmit
+  handleSubmit,
 }) => {
-  function handleNameChange(event) {
-    setName(event.target.value);
-  };
-
-  function handlePhoneChange(event) {
-    setPhone(event.target.value);
-  };
-
-  function handleEmailChange(event) {
-    setEmail(event.target.value);
-  };
-
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <label for="name">Name</label>
-        <input id="name" name="name" value={name} onChange={handleNameChange} type="text"/>
-        <label for="phone">Phone number</label>
-        <input id="phone" name="phone" value={phone} onChange={handlePhoneChange} type="text"/>
-        <label for="email">Email</label>
-        <input id="email" name="email" value={email} onChange={handleEmailChange} type="email"/>
-        <input value="Submit" type="submit"/>
-      </form>
-    </>
+    <form onSubmit={handleSubmit}>
+      <label>
+        <input
+          type="text"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          placeholder="Contact Name"
+          aria-label="Contact Name"
+        />
+      </label>
+      <br />
+      <label>
+        <input
+          type="tel"
+          name="phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+          // regex is for US phone numbers
+          pattern="[1-9][0-9]{2}-[1-9][0-9]{2}-[0-9]{4}"
+          placeholder="Contact Phone (###-###-####)"
+          aria-label="Contact Phone"
+        />
+      </label>
+      <br />
+      <label>
+        <input
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          placeholder="Contact Email"
+          aria-label="Contact Email"
+        />
+      </label>
+      <br />
+      <input type="submit" value="Add Contact" aria-label="Add Contact" />
+    </form>
   );
 };
-
