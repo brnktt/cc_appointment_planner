@@ -1,28 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { ContactForm } from "../../components/contactForm/ContactForm";
 import { TileList } from "../../components/tileList/TileList";
 
-export const ContactsPage = ({ contacts, onContactAdd}) => {
+export const ContactsPage = ({ contacts, addContact}) => {
   const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [duplicate, setDuplicate] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const isDuplicate = contacts.some((c) => {
-      return c.name = name;
-    });
-
-    if (!isDuplicate) {
-      onContactAdd(name, phoneNumber, email);
+    if (!duplicate) {
+      addContact(name, phone, email);
+      setName("");
+      setPhone("");
+      setEmail("");
+    } else {
+      window.alert("You cannot add duplicate contact");
     }
-
-    setName("");
-    setPhoneNumber("");
-    setEmail("");
   };
+
+  useEffect(() => {
+    const nameIsDuplicate = () => {
+      const found = contacts.find((contact) => contact.name === name);
+      if (found !== undefined) {
+        return true;
+      }
+      return false;
+    };
+
+    if (nameIsDuplicate()) {
+      setDuplicate(true);
+    } else {
+      setDuplicate(false);
+    }
+  }, [name, contacts, duplicate]);
 
   return (
     <div>
@@ -31,8 +44,8 @@ export const ContactsPage = ({ contacts, onContactAdd}) => {
         <ContactForm 
           name={name}
           setName={setName}
-          phone={phoneNumber}
-          setPhone={setPhoneNumber}
+          phone={phone}
+          setPhone={setPhone}
           email={email}
           setEmail={setEmail}
           handleSubmit={handleSubmit}
